@@ -1,24 +1,42 @@
 <template>
-    <h3>{{ question.label }}</h3>
-    <br/>
-    <div v-for="choices in question.choices">
-        <div>
-            <input 
-                type="checkbox" 
-                :key="choices">
-            {{ choices }}
-        </div>
+    <div class="question">
+        <h3>{{ question.question }}</h3>
+        <ul>
+            <li v-for="(choice, index) in question.choices" :key="choice">
+                <label :for="`answer${index}`">
+                    <input 
+                        :id="`answer${index}`" 
+                        type="radio" 
+                        name="answer" 
+                        v-model="answer"
+                        :value="choice">
+                    {{  choice }}
+                </label>
+            </li>
+        </ul>
+        <button :disabled="!hasAnswer" @click="emits('answer', answer)">Suivant</button>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
-
-const question = ref({
-    label: 'Lorem Ipsum',
-    choices: ['A', 'B', 'C', 'D'],
-    correct_answer: 'A'
+const props = defineProps({
+    question: Object
 })
 
+const emits = defineEmits(['answer'])
+const answer = ref(null)
+const hasAnswer = computed(() => answer.value !== null)
 </script>
+
+<style lang="css" scoped>
+.question {
+    padding: 2rem;
+}
+
+.question button{
+    margin-left: auto;
+    display: block;
+}
+</style>
