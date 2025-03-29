@@ -1,6 +1,6 @@
 {
     "title": "Questionnaire sur les Films et Séries",
-    "minimum_score": 1,
+    "minimum_score": 4,
     "success_message": "Félicitations! Vous êtes un véritable cinéphile!",
     "failure_message": "Dommage! Vous devriez regarder plus de films et séries.",
     "questions": [

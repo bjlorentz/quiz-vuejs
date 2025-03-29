@@ -6,7 +6,8 @@
                         name="answer" 
                         v-model="model"
                         :disabled="disabled"
-                        :value="value">
+                        :value="value"
+                        @change="onChange">
                     {{ value }}
                 </label>
 </template>
@@ -23,11 +24,17 @@ const props = defineProps({
 
 const model = defineModel({})
 
+const emits = defineEmits(['change'])
+
 const classes = computed(() => ({
     disabled: props.disabled,
     right: props.disabled && props.correctAnswer === props.value,
     wrong: props.disabled && props.correctAnswer !== props.value && model.value === props.value
 }))
+
+const onChange = (event) => {
+    emits('change', event)
+}
 </script>
 
 <style scoped>

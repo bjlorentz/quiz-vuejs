@@ -9,16 +9,16 @@
                     :value="choice"
                     v-model="answer"
                     :correctAnswer="question.correct_answer"
+                    @change="onAnswer"
                 />
             </li>
         </ul>
-        <button :disabled="!hasAnswer" @click="emits('answer', answer)">Suivant</button>
     </div>
 </template>
 
 <script setup>
 import { shuffleArray } from '@/functions/array';
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import Answer from './Answer.vue';
 
 const props = defineProps({
@@ -30,6 +30,22 @@ const answer = ref(null)
 const hasAnswer = computed(() => answer.value !== null)
 
 const randomAnswer = computed(() => shuffleArray(props.question.choices))
+
+let timer
+
+const onAnswer = () => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+        emits('answer', answer.value)
+    }, 1_000)
+}
+
+onMounted(() => {
+    timer = setTimeout(() => {
+        answer.value = ''
+        onAnswer()
+    }, 3_000)
+})
 </script>
 
 <style lang="css" scoped>
